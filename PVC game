@@ -1,0 +1,181 @@
+import random
+
+# Pour les classes, __init__ définit le constructeur, c'est obligé d'en mettre pour chaque classe.
+
+
+# Définition de la classe arme
+
+class Arme :
+  def __init__(self, nom, degats, durabilite) :
+    self.nom = nom
+    self.degats = degats
+    self.durabilite = durabilite
+  
+  def info(self) :
+    print("Nom de l'arme : " + self.nom + ". Dégats : " + str(self.degats))
+
+# Définition de la classe joueur
+
+class Player :
+  def __init__(self, nomJoueur, vieJoueur, nomAtt1, degatAtt1, nomAtt2, degatAtt2) :
+    self.nomJoueur = nomJoueur
+    self.vieJoueur = vieJoueur
+    self.nomAtt1 = nomAtt1
+    self.degatAtt1 = degatAtt1 
+    self.nomAtt2 = nomAtt2
+    self.degatAtt2 = degatAtt2
+    
+  def infoJ (self) :
+    print("Nom : " + self.nomJoueur + ". Vie : " + str(self.vieJoueur) + ". Attaques : (1 : " + self.nomAtt1 + ", " + str(self.degatAtt1) + ". 2 : " + self.nomAtt2 + ", " + str(self.degatAtt2) + ")")
+
+    
+# Définition de la classe ennemi
+
+class Ennemi :
+  def __init__ (self, nomEnnemi, vieEnnemi, attaqueEnnemi) :
+    self.nomEnnemi = nomEnnemi
+    self.vieEnnemi = vieEnnemi
+    self.attaqueEnnemi = attaqueEnnemi
+  def infoE (self) :
+    print("Nom : " + self.nomEnnemi + ". Vie : " + str(self.vieEnnemi) + ". Attaque : " + str(self.attaqueEnnemi))
+  
+# Définition de la classe Potion
+
+class Potion :
+  def __init__ (self, nomPot, viePot, durabilite) :
+    self.nomPot = nomPot
+    self.viePot = viePot
+    self.durabilite = durabilite
+
+  def infoProt (self) :
+    print("Nom : " + self.nomPot + ". Pv en plus : " + str(self.viePot) + ". Nombre d'utilisations : " + str(self.durabilite))
+
+# Création des armes
+
+arc = Arme("Arc", 15, 13)
+lame = Arme("Lame Tranchante", 30, 8)
+massue = Arme("Massue", 23, 10)
+
+
+# Création des personnages
+
+hercules = Player("Hercules", 150, "Forcage", 14, "Puissance des dieux", 22)
+thor = Player("Thor", 150, "Poing éclair", 15, "Foudroyer", 20)
+achilles = Player("Achilles", 145, "Cheval de Troie", 16, "Talonnage", 22)
+
+# Création des ennemis
+
+kraken = Ennemi("Kraken", 400, 25)
+dragon = Ennemi("Dragon", 500, 30)
+ogre = Ennemi("Ogre", 450, 20)
+
+# Création des potions 
+
+pot1 = Potion("Coeur de dragon", 35, 3)
+pot2 = Potion("Adrénaline", 25, 4)
+pot3 = Potion("Insuline", 20, 5)
+
+# Intro au jeu
+
+print("Bienvenue à toi jeune combatant !");
+pseudo = input("Quel est ton pseudo ?\n")
+print("")
+
+# Choix du perso
+print("Alors " + pseudo + ", quel héros choisis-tu ? (1 : Hercules; 2 : Thor; 3 : Achilles)")
+print("")
+hercules.infoJ()
+thor.infoJ()
+achilles.infoJ()
+choixPerso = int(input())
+persos = [hercules, thor, achilles]
+print("Tu as choisi : " + persos[choixPerso-1].nomJoueur)
+print("")
+
+# Choix ennemi
+print("Quel monstre veux-tu affronter ? (1: Kraken; 2 : Dragon; 3 : Ogre)")
+print("")
+kraken.infoE()
+dragon.infoE()
+ogre.infoE()
+choixEnnemi = int(input())
+ennemis = [kraken, dragon, ogre]
+print("Très bien, tu vas combattre contre : " + ennemis[choixEnnemi-1].nomEnnemi)
+print("")
+
+# Choix arme
+print("C'est bientot fini. Quelle arme veux-tu choisir ? (1 : arc; 2 : lame; 3 : massue)")
+print("")
+arc.info()
+lame.info()
+massue.info()
+choixArme = int(input())
+armes = [arc, lame, massue]
+print("Vous avez choisi : " + armes[choixArme-1].nom)
+print("")
+
+# Choix potion
+print("Pour finir, quelles potions veux-tu emporter avec toi ? (1 : Coeur dragon; 2 : Adrénaline; 3 : Insuline")
+print("")
+pot1.infoProt()
+pot2.infoProt()
+pot3.infoProt()
+potions = [pot1, pot2, pot3]
+choixPot = int(input())
+print("Tu as choisi la potion : " + potions[choixPot-1].nomPot)
+print("")
+
+# Affectation des changements
+
+vieJoueur = persos[choixPerso-1].vieJoueur
+
+# Préparation de l'ennemi
+
+vieEnnemi = ennemis[choixEnnemi-1].vieEnnemi 
+attaqueEnnemi = ennemis[choixEnnemi-1].attaqueEnnemi
+
+# Lancement du jeu
+
+print("Très bien " + pseudo + " ! À l'attaque")
+print("Appuyez sur enter à la fin de chaque tour pour continuer")
+print("")
+
+while(vieEnnemi > 0 and vieJoueur > 0) :
+  res = random.randint(1,6)
+  if (res%2 == 0) :
+    print("Vous ratez votre tour")
+    if (res == 6 or res == 4) :
+      vieJoueur -= attaqueEnnemi
+      print("Vous subissez une attaque du " + ennemis[choixEnnemi-1].nomEnnemi + "... Il vous reste : " + str(vieJoueur) + " pv")
+      if(potions[choixPot-1].durabilite > 0) :
+        print("Voulez-vous utiliser une potion ? (1 : oui; 2 : non)")
+        choixPotC = int(input())
+        if (choixPotC == 1) :
+          vieJoueur += potions[choixPot-1].viePot
+          potions[choixPot-1].durabilite -= 1
+          print("Vos pv passent à : " + str(vieJoueur))
+          print("Il vous reste " + str(potions[choixPot-1].durabilite) + " potions")
+          input()
+        else :
+          vieJoueur = vieJoueur
+  
+  else :
+    print("Quelle attaque voulez-vous utiliser ? ( 1 : " + persos[choixPerso-1].nomAtt1 + "; 2 : " + persos[choixPerso-1].nomAtt2 + ")")
+    choixAtt = int(input())
+    while(choixAtt != 1 and choixAtt != 2) :
+      print("Veuillez entrer une valeur possible.")
+      choixAtt = int(input())
+      if (choixAtt == 1 or choixAtt == 2) :
+        break
+    attaques = [persos[choixPerso-1].degatAtt1, persos[choixPerso-1].degatAtt2]
+    vieEnnemi -= (attaques[choixAtt-1] + armes[choixArme-1].degats)
+    print("Vous réussissez votre attaque. Il reste : " + str(vieEnnemi) + " pv")
+    input()
+
+# Fin du jeu
+
+if (vieEnnemi <= 0) :
+  print("Bravo jeune héros ! L'ennemi a été vaincu !")
+if (vieJoueur <= 0) :
+  print("Les ténèbres l'emportent... Vous êtes mort au combat !")
+
